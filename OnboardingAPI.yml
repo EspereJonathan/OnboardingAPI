@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: Onboarding API 
+  version: '1.2'
+  description: STD21010
+  contact:
+    email: hei.espere@gmail.com
+servers:
+  - url: http://STD21010.com
+  
+paths:
+  /students:
+    get:
+      summary: Get all students
+      operationId: getAllStudents
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              example:
+                - id: 1
+                  name: espéré
+                  birthdate: 2001-08-05 
+                - id: 2
+                  name: boto
+                  birthdate: 2000-01-01 
+    post:
+      summary: Add a new student
+      operationId: addStudent
+      requestBody:
+        description: Student object to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                birthdate:
+                  type: string
+              example:
+                id: 3
+                name: koto 
+                email: 2006-01-01 
+      responses:
+        '201':
+          description: Student added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 3
+                  name:
+                    type: string
+                    example: koto
+                  birthdate:
+                    type: string
+                    example: 2006-01-01
