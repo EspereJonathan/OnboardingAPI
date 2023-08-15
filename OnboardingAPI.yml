@@ -6,7 +6,7 @@ info:
   contact:
     email: hei.espere@gmail.com
 servers:
-  - url: http://STD21010.com
+  - url: https://raw.githubusercontent.com/EspereJonathan/OnboardingAPI/main/OnboardingAPI.yml
   
 paths:
   /students:
