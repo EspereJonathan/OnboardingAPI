@@ -3,29 +3,68 @@ info:
   title: Onboarding API 
   version: '1.2'
   description: STD21010
-  contact:
-    email: hei.espere@gmail.com
 servers:
-  - url: https://raw.githubusercontent.com/EspereJonathan/OnboardingAPI/main/OnboardingAPI.yml
-  
+  - url: https://STD21010.com  
+tags:
+  - name: Teacher
+  - name: Students
 paths:
+  /teacher:
+    get:
+      tags:
+        - "Teacher"
+      summary: Get all Teacher
+      operationId: getTeacher
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Teacher"
+        400:
+          description: Error
+          content: {}
+    post:
+      tags:
+        - "Teacher"
+      summary: create a new Teacher
+      requestBody:
+        required: true
+        description: new Teacher
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTeacher"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Teacher"
+        400:
+          description: Error
+          content: {}   
   /students:
     get:
+      tags:
+        - "Students"
       summary: Get all students
       operationId: getAllStudents
       responses:
-        '200':
-          description: Successful operation
+        200:
+          description: Success
           content:
             application/json:
-              example:
-                - id: 1
-                  name: espéré
-                  birthdate: 2001-08-05 
-                - id: 2
-                  name: boto
-                  birthdate: 2000-01-01 
+              schema:
+                $ref: "#/components/schemas/Student"
+      
     post:
+      tags:
+        - "Students"
       summary: Add a new student
       operationId: addStudent
       requestBody:
@@ -34,32 +73,138 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                name:
-                  type: string
-                birthdate:
-                  type: string
-              example:
-                id: 3
-                name: koto 
-                email: 2006-01-01 
+              $ref: "#/components/schemas/NewStudent"
+
       responses:
         '201':
           description: Student added successfully
           content:
             application/json:
               schema:
+                $ref: "#/components/schemas/Student"
+    put:
+      tags:
+        - "Students"
+      summary: modifies Student list
+      requestBody:
+        description: new Student
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
                 type: object
                 properties:
                   id:
                     type: integer
-                    example: 3
-                  name:
-                    type: string
-                    example: koto
-                  birthdate:
-                    type: string
-                    example: 2006-01-01
+                allOf:
+                  - $ref: "#/components/schemas/NewStudent"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
+        400:
+          description: Error
+          content: {}
+    delete:
+      tags:
+        - "Students"
+      summary: delete a Student by referring it to id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Returns the id of the deleted Student"
+
+        400:
+          description: Error
+          content: {}                  
+
+components:
+  schemas:
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Ramarozaka"
+        lastname:
+          type: string
+          example: "Toky"
+        courses:
+          type: string
+          example: "PROG,Données"
+        duration:
+          type: string
+          example: "2h"  
+        email:
+          type: string
+          example: "toky.hei@school"
+    NewTeacher:
+      type: object
+      properties:
+        TeacherId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ramarozaka"
+        lastname:
+          type: string
+          example: "Toky"
+        courses:
+          type: string
+          example: "PROG,WEB"
+        duration:
+          type: string
+          example: "2h"
+        email:
+          type: string
+          example: "toky.hei@school"
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name: 
+          type: string
+          example: "Espéré"
+        birthdate:
+          type: string
+          example: "2001-08-05"
+        group:
+          type: string
+          example: "H2"
+    NewStudent:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Espéré"
+        birthdate:
+          type: string
+          example: "2001-08-05"
+        group:
+          type: string
+          example: "H2"  
